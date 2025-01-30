@@ -67,6 +67,7 @@ const createDashboard = async (req, res) => {
 const getDashboardData = async (req, res) => {
   try {
     const userId = getUserIdFromToken(req); // Get the logged-in user's ID
+    console.log("userId", userId);
     
     // Fetch dashboard data for the specified userId
     const dashboard = await Dashboard.findOne({ userId }).populate("userId");
