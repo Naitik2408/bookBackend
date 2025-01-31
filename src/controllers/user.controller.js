@@ -112,9 +112,34 @@ exports.logoutUser = async (req, res) => {
 };
 
 // Verify token and provide user data
+// exports.verifyToken = async (req, res) => {
+//     try {
+//         const token = req.cookies.token;
+
+//         if (!token) {
+//             return res.status(401).send({ error: 'Not authenticated' });
+//         }
+
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         const user = await User.findById(decoded._id);
+
+//         if (!user) {
+//             return res.status(404).send({ error: 'User not found' });
+//         }
+
+//         res.send({ user, token });
+//     } catch (error) {
+//         res.status(401).send({ error: 'Invalid token' });
+//     }
+// };
+
 exports.verifyToken = async (req, res) => {
     try {
-        const token = req.cookies.token;
+        let token = req.cookies.token;
+
+        if (!token) {
+            token = req.headers['x-access-token']; // Get the token from headers if not in cookies
+        }
 
         if (!token) {
             return res.status(401).send({ error: 'Not authenticated' });

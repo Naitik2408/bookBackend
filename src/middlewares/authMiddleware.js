@@ -1,7 +1,11 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddleware = (req, res, next) => {
-    const token = req.cookies.token;
+    let token = req.cookies.token;
+
+    if (!token) {
+        token = req.headers['x-access-token']; // Get the token from headers if not in cookies
+    }
 
     if (!token) {
         return res.status(401).send({ error: 'Not authenticated' });
