@@ -4,7 +4,10 @@ const jwt = require("jsonwebtoken");
 
 // Helper function to get the logged-in user's ID from the token
 const getUserIdFromToken = (req) => {
-  const token = req.cookies.token; // Get the token from cookies
+  let token = req.cookies.token; // Get the token from cookies
+  if (!token) {
+    token = req.headers['x-access-token']; // Get the token from headers
+  }
   if (!token) {
     throw new Error("No token found");
   }
